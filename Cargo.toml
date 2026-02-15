@@ -4,6 +4,10 @@ version = "0.1.0"
 edition = "2021"
 description = "A tmux session browser TUI"
 license = "MIT"
+repository = "https://github.com/adammeghji/tmxu"
+homepage = "https://github.com/adammeghji/tmxu"
+keywords = ["tmux", "tui", "terminal", "session", "multiplexer"]
+categories = ["command-line-utilities"]
 
 [dependencies]
 ratatui = "0.30"
