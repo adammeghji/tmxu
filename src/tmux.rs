@@ -1,6 +1,6 @@
 use std::process::Command;
 
-use color_eyre::eyre::{Context, Result, eyre};
+use color_eyre::eyre::{eyre, Context, Result};
 
 #[derive(Debug, Clone)]
 pub struct TmuxPane {
@@ -60,10 +60,7 @@ pub fn shorten_path(path: &str) -> String {
 }
 
 pub fn is_tmux_available() -> bool {
-    Command::new("tmux")
-        .arg("list-sessions")
-        .output()
-        .is_ok()
+    Command::new("tmux").arg("list-sessions").output().is_ok()
 }
 
 #[allow(dead_code)]

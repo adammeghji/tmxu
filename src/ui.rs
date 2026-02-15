@@ -35,7 +35,11 @@ pub fn render_banner() -> Text<'static> {
 
     let mut text = ansi.into_text().unwrap_or_else(|_| Text::raw(hostname));
     // Trim trailing blank lines from tui-banner output
-    while text.lines.last().is_some_and(|l| l.spans.iter().all(|s| s.content.trim().is_empty())) {
+    while text
+        .lines
+        .last()
+        .is_some_and(|l| l.spans.iter().all(|s| s.content.trim().is_empty()))
+    {
         text.lines.pop();
     }
     text
@@ -64,11 +68,8 @@ pub fn draw(frame: &mut Frame, app: &mut App) {
         draw_header(frame, banner, chunks[0]);
         (chunks[1], chunks[2])
     } else {
-        let chunks = Layout::vertical([
-            Constraint::Min(3),
-            Constraint::Length(3),
-        ])
-        .split(frame.area());
+        let chunks =
+            Layout::vertical([Constraint::Min(3), Constraint::Length(3)]).split(frame.area());
         (chunks[0], chunks[1])
     };
 
@@ -175,9 +176,7 @@ fn build_tree_items(sessions: &[TmuxSession]) -> Vec<TreeItem<'static, String>> 
 
             let name = Span::styled(
                 session.name.clone(),
-                Style::default()
-                    .fg(CYAN)
-                    .add_modifier(Modifier::BOLD),
+                Style::default().fg(CYAN).add_modifier(Modifier::BOLD),
             );
 
             let meta = Span::styled(
@@ -198,19 +197,11 @@ fn build_tree_items(sessions: &[TmuxSession]) -> Vec<TreeItem<'static, String>> 
                 .iter()
                 .enumerate()
                 .map(|(wi, window)| {
-                    let win_label = Span::styled(
-                        format!("[{}] ", wi + 1),
-                        Style::default().fg(YELLOW),
-                    );
+                    let win_label =
+                        Span::styled(format!("[{}] ", wi + 1), Style::default().fg(YELLOW));
                     let summary = TmuxSession::window_summary(window);
-                    let wname = Span::styled(
-                        window.name.to_string(),
-                        Style::default().fg(WHITE),
-                    );
-                    let path = Span::styled(
-                        format!("  {summary}"),
-                        Style::default().fg(DIM),
-                    );
+                    let wname = Span::styled(window.name.to_string(), Style::default().fg(WHITE));
+                    let path = Span::styled(format!("  {summary}"), Style::default().fg(DIM));
                     let window_line = Line::from(vec![win_label, wname, path]);
 
                     if window.panes.len() > 1 {
@@ -232,12 +223,8 @@ fn build_tree_items(sessions: &[TmuxSession]) -> Vec<TreeItem<'static, String>> 
                                 )
                             })
                             .collect();
-                        TreeItem::new(
-                            format!("{}", window.index),
-                            window_line,
-                            pane_items,
-                        )
-                        .expect("unique pane identifiers")
+                        TreeItem::new(format!("{}", window.index), window_line, pane_items)
+                            .expect("unique pane identifiers")
                     } else {
                         TreeItem::new_leaf(format!("{}", window.index), window_line)
                     }
@@ -319,9 +306,7 @@ fn draw_confirm_popup(frame: &mut Frame, target: &str) {
             Span::styled("  Kill session ", Style::default().fg(WHITE)),
             Span::styled(
                 format!("'{target}'"),
-                Style::default()
-                    .fg(YELLOW)
-                    .add_modifier(Modifier::BOLD),
+                Style::default().fg(YELLOW).add_modifier(Modifier::BOLD),
             ),
             Span::styled("? ", Style::default().fg(WHITE)),
             Span::styled("[y/N]", Style::default().fg(CYAN)),

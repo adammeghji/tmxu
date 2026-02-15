@@ -61,7 +61,11 @@ pub struct App {
 impl App {
     pub fn new(no_logo: bool) -> Result<Self> {
         let sessions = tmux::fetch_sessions().unwrap_or_default();
-        let banner = if no_logo { None } else { Some(ui::render_banner()) };
+        let banner = if no_logo {
+            None
+        } else {
+            Some(ui::render_banner())
+        };
         let mut app = Self {
             sessions,
             tree_state: TreeState::default(),
@@ -320,8 +324,7 @@ impl App {
                 let target = target.clone();
                 match tmux::kill_session(&target) {
                     Ok(()) => {
-                        self.flash =
-                            Some(FlashMessage::new(format!("Killed session '{target}'")));
+                        self.flash = Some(FlashMessage::new(format!("Killed session '{target}'")));
                         self.mode = Mode::Normal;
                         return Action::Refresh;
                     }
