@@ -1,0 +1,18 @@
+[package]
+name = "tmxu"
+version = "0.1.0"
+edition = "2021"
+description = "A tmux session browser TUI"
+license = "MIT"
+
+[dependencies]
+ratatui = "0.30"
+tui-tree-widget = "0.24"
+crossterm = "0.29"
+color-eyre = "0.6"
+tui-banner = "0.2"
+ansi-to-tui = "8"
+
+[profile.release]
+lto = true
+strip = true
