@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#MISE description="Tag and push a major release"
+set -euo pipefail
+
+current=$(grep '^version' Cargo.toml | head -1 | sed 's/.*"\(.*\)"/\1/')
+IFS='.' read -r major minor patch <<< "$current"
+new="$((major + 1)).0.0"
+
+sed -i '' "s/^version = \"$current\"/version = \"$new\"/" Cargo.toml
+git add Cargo.toml
+git commit -m "release v$new"
+git tag "v$new"
+echo "Tagged v$new — run 'git push origin main v$new' to release"
